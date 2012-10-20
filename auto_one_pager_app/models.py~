@@ -1,0 +1,44 @@
+from django.db import models
+from django.contrib import admin
+
+# import the mptt class to enable heirarchal trees
+# import mptt
+
+# Create your models here.
+class Task(models.Model):
+  # task number as to be displayed in output file
+  task_num = models.IntegerField(default=0)
+  title = models.CharField(max_length=2000)
+  # assume you will never haave a task more than 999 hours...i hope
+  est_time_hours = models.DecimalField(max_digits=5, decimal_places=2)
+  actual_time_hours = models.DecimalField(max_digits=5, decimal_places=2)
+  depth = models.IntegerField(default=0)
+  # add boolean fields we care about
+  priority = models.BooleanField(default=False)
+  done = models.BooleanField(default=False)
+  # parent_task=models.ForeignKey('self', null=True, blank=True,
+  #    related_name='children', default=NULL)
+  # use hack to determine parent - just use item number and string and depth info
+  parent_num = models.IntegerField(default=0)
+  # describe Task by its title
+  def __unicode__(self):
+    return self.title
+  # Code to include the Done checkmark button.
+  #def mark_done(self):
+  #  return "<a href='%s'>Done</a>" % reverse("dbe.todo.views.mark_done",args=[self.pk])
+  #mark_done.allow_tags = True
+
+class Meeting(models.Model):
+  title = models.CharField(max_length=2000)
+  time_length_hours= models.DecimalField(max_digits=5, decimal_places=2)
+  # describe Meeting by its title
+  def __unicode(self):
+    return self.title
+
+class TaskAdmin(admin.ModelAdmin):
+  fields=(("task_num","parent_num","depth"),("title","est_time_hours","actual_time_hours"),("priority","done"))
+  list_display =["task_num","parent_num","depth","title","est_time_hours","actual_time_hours","priority","done"]
+  
+# mptt.register(Task)
+admin.site.register(Task, TaskAdmin)
+admin.site.register(Meeting)

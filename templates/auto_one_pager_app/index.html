@@ -1,0 +1,5 @@
+<form action="." method="get" id="exportFile">{% csrf_token %}
+    <label>Export File:</label><br/>
+    <input type="text" name="r" value="{{ update_revision|escape }}"/> 
+    <input type="submit" value="Update" />
+</form>

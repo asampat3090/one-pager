@@ -1,0 +1,47 @@
+from auto_one_pager_app.models import Task, Meeting
+from django.core.files import File, ContentFile
+
+f=open('one_pager.txt', 'w')
+output_file=File(f)
+
+with open('one_pager.txt', 'w') as f:
+  output_file=File(f)
+  # first add the title header on the first line
+  output_file.write("Accomplishments from Last Week's Priority
+  List".encode("UTF-8"))
+
+  for item in Task.objects.all():
+    # if it is a root task then just add it with one indent
+    if item.depth==1:
+      # create string to add
+      linetoadd=str(item.task_num) + '. ' + item.title + ' ' + '(' +str(item.est_time_hours) + 'hrs' + ')' + '[' + str(item.actual_time_hours)+ 'hrs' + ']' + '\n'
+      # add an indent to the task title
+      linetoadd=indent(linetoadd, 4)
+      output_file.write(linetoadd)
+      # now check through all tasks again to find a child
+      # note this is only one level down - no more
+      for item1 in Task.objects.all():
+        # if you find a child indent and add to file
+        if (item1.depth == item.depth +1) and  (item1.parent_num ==item.task_num):
+          sublinetoadd=chr(item1.task_num+96) + '. ' + item1.title+'\n'
+          # add formatting based on done or priority
+          sublinetoadd=sublinetoadd + check_done_priority(item1)
+          # add proper indent to the task title
+          sublinetoadd=indent(sublinetoadd, 8)          
+      
+  # add an indent function to add padding to lines
+  def indent(strval, amount):
+    ch=' '
+    padding = amount*ch
+    return padding + strval
+
+  # add a function to check if done or on priority list
+  def check_done_priority(object):
+    if object.done==False:
+      return '-bold'
+    elif (object.done==True) and (object.priority==False):
+      return '-italics'
+    else:
+      return ''
+
+
