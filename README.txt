@@ -20,12 +20,12 @@ Usage Instructions:
 
 Adding Tasks, SubTasks, and Meetings:
 
-	1.	Navigate to http://127.0.0.1:8000/admin/auto_one_pager_app
+	1.	In a browser, navigate to http://127.0.0.1:8000/admin/auto_one_pager_app
 	2.	You can add new Tasks, SubTasks, and Meetings by clicking 'Add New' next to the corresponding item
 	3.	You can click on the items themselves to obtain a list of Tasks, SubTasks, or Meetings
 		⁃	You can edit the actual time spent throughout the week and update the value
 
 Exporting the Tasks at the end of the week: 
 
-	1.	Navigate to http://127.0.0.1:8000/auto_one_pager_app. You should see a "File Exported!" message.
+	1.	In a browser, navigate to http://127.0.0.1:8000/auto_one_pager_app. You should see a "File Exported!" message.
 	2.	Navigate to the project root to access the 'one_pager.txt' file.
